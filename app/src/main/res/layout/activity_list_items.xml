@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_items"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:rowCount="2"
+    android:columnCount="2">
+
+    <RadioButton
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill"
+        android:text="@string/radio_button"
+        tools:ignore="VisualLintButtonSize">
+
+    </RadioButton>
+
+    <CheckBox
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill"
+        android:text="@string/checkbox"
+        tools:ignore="isualLintButtonSize">
+
+    </CheckBox>
+
+    <Switch
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill"
+        android:text="@string/switch_label"
+        tools:ignore="UseSwitchCompatOrMaterialXml,VisualLintButtonSize">
+
+    </Switch>
+
+    <ImageButton
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill"
+        android:contentDescription="@string/image_desc"
+        android:src="@android:drawable/ic_menu_camera"
+        tools:ignore="ImageContrastCheck">
+
+    </ImageButton>
+
+</GridLayout>
