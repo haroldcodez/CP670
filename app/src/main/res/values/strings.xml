@@ -11,4 +11,12 @@
     <string name="checkbox">Check Box</string>
     <string name="switch_label">What does this do ?</string>
     <string name="image_desc">image placeholder</string>
+    <string name="login_btn_txt">Login</string>
+    <string name="filename">userdata</string>
+    <string name="email_address">email address</string>
+    <string name="dialog_title">Close Page</string>
+    <string name="dialog_message">Do you want to close this page?</string>
+    <string name="ok">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="response">Here is my response</string>
 </resources>

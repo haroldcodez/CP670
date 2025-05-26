@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Android Assignment</string>
     <string name="hello_message">Bonjour le monde!</string>
-    <string name="ButtonText">I\'m a button</string>
+    <string name="ButtonText">Je suis un bouton</string>
     <string name="login_label">Se Connecter</string>
     <string name="password_label">Mot de Passe</string>
     <string name="password_hint">entrez le mot de passe</string>
@@ -12,4 +12,12 @@
     <string name="checkbox">Case à Cocher</string>
     <string name="switch_label">Qu\'est-ce que cela fait ?</string>
     <string name="image_desc">conteneur d\'images</string>
+    <string name="login_btn_txt">Se connecter</string>
+    <string name="filename">userdata</string>
+    <string name="email_address">adresse email</string>
+    <string name="dialog_title">Fermer la page</string>
+    <string name="dialog_message">Voulez-vous fermer cette page ?</string>
+    <string name="ok">Oui</string>
+    <string name="cancel">Annuler</string>
+    <string name="response">Voici ma réponse</string>
 </resources>

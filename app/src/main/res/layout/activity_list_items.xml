@@ -19,13 +19,15 @@
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
         android:text="@string/checkbox"
-        tools:ignore="isualLintButtonSize">
+        android:id="@+id/check_box"
+        tools:ignore="visualLintButtonSize,VisualLintButtonSize">
 
     </CheckBox>
 
     <Switch
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
+        android:id="@+id/app_switch"
         android:text="@string/switch_label"
         tools:ignore="UseSwitchCompatOrMaterialXml,VisualLintButtonSize">
 
@@ -34,6 +36,7 @@
     <ImageButton
         android:layout_columnWeight="1"
         android:layout_gravity="fill"
+        android:id="@+id/img_btn"
         android:contentDescription="@string/image_desc"
         android:src="@android:drawable/ic_menu_camera"
         tools:ignore="ImageContrastCheck">
