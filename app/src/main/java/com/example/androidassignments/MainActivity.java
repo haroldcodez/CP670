@@ -3,15 +3,13 @@ package com.example.androidassignments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,22 +18,40 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        // Set Toolbar as ActionBar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Enable back arrow button on toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         Log.i(TAG, "inside onCreate");
 
+        // create login button object
         Button main_button = findViewById(R.id.button);
 
+        // onclick listener for login button
         main_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(MainActivity.this, ListItemsActivity.class), 10);
+            }
+        });
+
+        Button chat_button = findViewById(R.id.chat_btn);
+
+        //create onclick listener for the chat_button
+        chat_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "User clicked Start Chat");
+                Intent chatIntent = new Intent(MainActivity.this, ChatWindow.class);
+                startActivity(chatIntent);
             }
         });
 
@@ -94,5 +110,15 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i(TAG, "inside onDestroy");
 
+    }
+
+    // handler for the back button on the toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed(); // Or NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

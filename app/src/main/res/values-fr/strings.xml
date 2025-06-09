@@ -20,4 +20,9 @@
     <string name="ok">Oui</string>
     <string name="cancel">Annuler</string>
     <string name="response">Voici ma réponse</string>
+    <string name="chat_btn_label">Démarrer le chat</string>
+    <string name="chatbox_message">Tapez votre message</string>
+    <string name="send_btn_label">Envoyer</string>
+    <string name="chat_view">les messages de discussion apparaissent ici</string>
+    <string name="chat_out_view">messages de discussion entrants</string>
 </resources>

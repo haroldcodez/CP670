@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    tools:ignore="UseCompoundDrawables">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/message_text"
+        android:gravity="end"
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="10dp"
+        android:text="@string/chat_out_view">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/img_out_view"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="img_viewer"
+        android:src="@drawable/sym_call_incoming"
+        tools:ignore="ImageContrastCheck">
+
+    </ImageView>
+
+
+
+</LinearLayout>

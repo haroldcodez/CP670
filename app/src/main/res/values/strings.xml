@@ -19,4 +19,9 @@
     <string name="ok">Yes</string>
     <string name="cancel">Cancel</string>
     <string name="response">Here is my response</string>
+    <string name="chat_btn_label">Start Chat</string>
+    <string name="chatbox_message">Type your message</string>
+    <string name="send_btn_label">Send</string>
+    <string name="chat_view">chat messages appear here</string>
+    <string name="chat_out_view">incoming chat messages</string>
 </resources>

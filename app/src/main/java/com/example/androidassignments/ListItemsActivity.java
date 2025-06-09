@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -15,41 +16,46 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.widget.Toolbar;
 
 public class ListItemsActivity extends AppCompatActivity {
 
     private static final String TAG = "ListItemsActivity";
+
+    // create the camera object without initialization
     private ActivityResultLauncher<Intent> launchCamera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_items);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.list_items), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        // Set Toolbar as ActionBar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Enable back arrow button on toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         Log.i(TAG, "inside onCreate");
         print("inside onCreate");
 
+        // initialize camera object
         launchCamera = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
+                    // validate if the camera captured an image and assign it to the image button object
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Bitmap image = (Bitmap) result.getData().getExtras().get("data");
                         ImageButton imgButton = findViewById(R.id.img_btn);
@@ -61,6 +67,7 @@ public class ListItemsActivity extends AppCompatActivity {
 
         ImageButton btn_image = findViewById(R.id.img_btn);
 
+        // onclick listener for the image button
         btn_image.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("QueryPermissionsNeeded")
             @Override
@@ -75,6 +82,7 @@ public class ListItemsActivity extends AppCompatActivity {
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         Switch appSwitch = findViewById(R.id.app_switch);
 
+        // onCheckedChanged listener for the switch button
         appSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -88,9 +96,11 @@ public class ListItemsActivity extends AppCompatActivity {
 
         CheckBox appCheckbox = findViewById(R.id.check_box);
 
+        // onCheckedChanged listener for the checkbox
         appCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //create alert builder object to display a dialog box on the app
                 AlertDialog.Builder builder = new AlertDialog.Builder(ListItemsActivity.this);
                 builder.setMessage(R.string.dialog_message);
                 builder.setTitle(R.string.dialog_title);
@@ -116,6 +126,7 @@ public class ListItemsActivity extends AppCompatActivity {
 
     }
 
+    // print function for debug messages
     public void print (String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
@@ -158,6 +169,16 @@ public class ListItemsActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i(TAG, "inside onDestroy");
         print("inside onDestroy");
+    }
+
+    // handler for the back button on the toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed(); // Or NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

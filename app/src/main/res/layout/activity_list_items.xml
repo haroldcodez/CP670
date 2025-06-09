@@ -1,46 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_items"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:rowCount="2"
-    android:columnCount="2">
+    android:layout_height="match_parent"
+    android:orientation="vertical"> <!-- Vertical stacking -->
 
-    <RadioButton
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
-        android:text="@string/radio_button"
-        tools:ignore="VisualLintButtonSize">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/darker_gray"
+        android:textAlignment="center"
+        android:elevation="4dp"
+        android:title="List Items Activity"/>
 
-    </RadioButton>
+    <!-- Toolbar at the top -->
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/list_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="2"
+        android:columnCount="2">
 
-    <CheckBox
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
-        android:text="@string/checkbox"
-        android:id="@+id/check_box"
-        tools:ignore="visualLintButtonSize,VisualLintButtonSize">
 
-    </CheckBox>
+        <RadioButton
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:text="@string/radio_button"
+            tools:ignore="VisualLintButtonSize">
 
-    <Switch
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
-        android:id="@+id/app_switch"
-        android:text="@string/switch_label"
-        tools:ignore="UseSwitchCompatOrMaterialXml,VisualLintButtonSize">
+        </RadioButton>
 
-    </Switch>
+        <CheckBox
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:text="@string/checkbox"
+            android:id="@+id/check_box"
+            tools:ignore="visualLintButtonSize,VisualLintButtonSize">
 
-    <ImageButton
-        android:layout_columnWeight="1"
-        android:layout_gravity="fill"
-        android:id="@+id/img_btn"
-        android:contentDescription="@string/image_desc"
-        android:src="@android:drawable/ic_menu_camera"
-        tools:ignore="ImageContrastCheck">
+        </CheckBox>
 
-    </ImageButton>
+        <Switch
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:id="@+id/app_switch"
+            android:text="@string/switch_label"
+            tools:ignore="UseSwitchCompatOrMaterialXml,VisualLintButtonSize">
 
-</GridLayout>
+        </Switch>
+
+        <ImageButton
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:id="@+id/img_btn"
+            android:contentDescription="@string/image_desc"
+            android:src="@android:drawable/ic_menu_camera"
+            tools:ignore="ImageContrastCheck">
+
+        </ImageButton>
+
+    </GridLayout>
+</LinearLayout>
+

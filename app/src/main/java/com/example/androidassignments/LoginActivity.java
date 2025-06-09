@@ -9,11 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.widget.Toolbar;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,18 +19,19 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        // Set Toolbar as ActionBar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
 
         Log.i(TAG, "inside onCreate");
 
+        // function call to retrieve saved user data when activity is created
         loadSavedData();
     }
+
 
     @Override
     protected void onResume() {
@@ -73,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // function to load saved user data or the default data from file using sharedPreferences
     private void loadSavedData() {
 
         String data_file = getString(R.string.filename);
@@ -85,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // function to save the user's email address when the login button is clicked
     private void saveEmail() {
 
         String data_file_name = getString(R.string.filename);
@@ -104,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // onclick handler for the login button which call the saveEmail function after validating inputs
     public void onLoginClicked(View view) {
 
         EditText emailText = findViewById(R.id.login_text);
