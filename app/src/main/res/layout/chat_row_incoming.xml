@@ -23,7 +23,7 @@
         android:id="@+id/img_out_view"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:contentDescription="img_viewer"
+        android:contentDescription="@string/image_viewer_description"
         android:src="@drawable/sym_call_incoming"
         tools:ignore="ImageContrastCheck">
 

@@ -55,6 +55,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button toolbar_btn = findViewById(R.id.toolbar_btn);
+
+        //create onclick listener for the toolbar_button
+        toolbar_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "User clicked the Toolbar Button");
+                Intent toolIntent = new Intent(MainActivity.this, TestToolbar.class);
+                startActivity(toolIntent);
+            }
+        });
+
+
 
     }
 
@@ -116,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed(); // Or NavUtils.navigateUpFromSameTask(this);
+            onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);

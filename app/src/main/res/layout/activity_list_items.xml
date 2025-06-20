@@ -13,10 +13,10 @@
         android:background="@android:color/darker_gray"
         android:textAlignment="center"
         android:elevation="4dp"
-        android:title="List Items Activity"/>
+        android:title="@string/list_items_toolbar"/>
 
     <!-- Toolbar at the top -->
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <GridLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/list_items"
         android:layout_width="match_parent"

@@ -13,7 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@android:color/darker_gray"
         android:layout_alignParentTop="true"
-        android:title="Chat Activity"/>
+        android:title="@string/chat_activity"/>
 
     <ListView
         android:layout_alignParentStart="true"
