@@ -34,11 +34,13 @@ public class ChatDatabaseHelperTest {
         dbHelper.close();
     }
 
+    // test for successful database creation
     @Test
     public void testDatabaseCreation() {
         assertTrue(db.isOpen());
     }
 
+    // test that the database can save messages
     @Test
     public void testInsertMessage() {
         String message = "Hello, test!";
@@ -51,6 +53,7 @@ public class ChatDatabaseHelperTest {
         cursor.close();
     }
 
+    // test that calling the onUpgrade function drops the current table and creates a new blank one
     @Test
     public void testOnUpgradeDropsTable() {
         db.execSQL("INSERT INTO " + ChatDatabaseHelper.TABLE_NAME + " (" + ChatDatabaseHelper.KEY_MESSAGE + ") VALUES ('Old message')");

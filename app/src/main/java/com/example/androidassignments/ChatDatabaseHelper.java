@@ -7,11 +7,14 @@ import android.util.Log;
 
 public class ChatDatabaseHelper extends SQLiteOpenHelper {
 
+    //declare variables
     private static final String DATABASE_NAME = "Messages.db";
     private static final int VERSION_NUM = 2;
     public final static String KEY_ID = "id";
     public final static String KEY_MESSAGE = "message";
     public static final String TABLE_NAME = "chats";
+
+    // declare variable to facilitate the database creation
     private static final String DATABASE_CREATE = "create table "
             + TABLE_NAME + "(" + KEY_ID
             + " integer primary key  autoincrement, " + KEY_MESSAGE

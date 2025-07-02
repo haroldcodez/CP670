@@ -14,12 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ChatWindow extends AppCompatActivity {
-    private static final String ACTIVITY_NAME = "ChatWindow";
     // declare variables
+    private static final String ACTIVITY_NAME = "ChatWindow";
     private ListView listView;
     private EditText editTextMessage;
     ArrayList<String> messages = new ArrayList<>();
@@ -73,8 +72,9 @@ public class ChatWindow extends AppCompatActivity {
 
     }
 
+    // function to load database message and log results
     private void loadMessagesFromDatabase() {
-        // Query all messages from database
+        // Query to get  all messages from database
         String[] columns = {ChatDatabaseHelper.KEY_ID, ChatDatabaseHelper.KEY_MESSAGE};
         Cursor cursor = database.query(
                 ChatDatabaseHelper.TABLE_NAME,
@@ -85,12 +85,12 @@ public class ChatWindow extends AppCompatActivity {
         // Log cursor information
         Log.i(ACTIVITY_NAME, "Cursor's column count = " + cursor.getColumnCount());
 
-        // Print column names
+        // Print column names from the cursor
         for (int i = 0; i < cursor.getColumnCount(); i++) {
             Log.i(ACTIVITY_NAME, "Column " + i + ": " + cursor.getColumnName(i));
         }
 
-        // Get column index safely
+        // Get column indexes from the database
         int messageColumnIndex = cursor.getColumnIndex(ChatDatabaseHelper.KEY_MESSAGE);
         if (messageColumnIndex == -1) {
             Log.e(ACTIVITY_NAME, "Error: Column '" + ChatDatabaseHelper.KEY_MESSAGE + "' not found in cursor");
@@ -98,14 +98,14 @@ public class ChatWindow extends AppCompatActivity {
             return;
         }
 
-        // Process the cursor results using while(!cursor.isAfterLast())
+        // extract and log all the saved messages in the database
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 try {
                     String message = cursor.getString(messageColumnIndex);
                     messages.add(message);
                     Log.i(ACTIVITY_NAME, "SQL MESSAGE: " + message);
-                    cursor.moveToNext();  // Important: Don't forget to move to next!
+                    cursor.moveToNext();
                 } catch (Exception e) {
                     Log.e(ACTIVITY_NAME, "Error reading message from cursor", e);
                     break;
@@ -119,6 +119,7 @@ public class ChatWindow extends AppCompatActivity {
         messageAdapter.notifyDataSetChanged();
     }
 
+    // function to insert messages to the database
     private long insertMessageIntoDatabase(String message) {
         ContentValues values = new ContentValues();
         values.put(ChatDatabaseHelper.KEY_MESSAGE, message);
