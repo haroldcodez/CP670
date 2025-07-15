@@ -35,4 +35,36 @@
     <string name="list_items_toolbar">Activité des éléments de liste</string>
     <string name="login_toolbar">Activité de connexion</string>
     <string name="main_activity_toolbar">Activité principale</string>
+    <string name="weather_btn_label">Prévisions météorologiques</string>
+    <string name="current_temperature">Température actuelle</string>
+    <string name="minimum_temperature">Température minimale</string>
+    <string name="maximum_temperature">Température maximale</string>
+    <string name="imgview">Vue des images</string>
+    <string name="city_list">Sélectionnez une ville canadienne</string>
+    <string-array name="cities">
+        <item>Ottawa</item>
+        <item>Barrie</item>
+        <item>Belleville</item>
+        <item>Brampton</item>
+        <item>Brantford</item>
+        <item>Burlington</item>
+        <item>Cambridge</item>
+        <item>Etobicoke</item>
+        <item>Guelph</item>
+        <item>Hamilton</item>
+        <item>Kingston</item>
+        <item>Kitchener</item>
+        <item>London</item>
+        <item>Markham</item>
+        <item>Milton</item>
+        <item>Mississauga</item>
+        <item>Oakville</item>
+        <item>Oshawa</item>
+        <item>Richmond Hill</item>
+        <item>Scarborough</item>
+        <item>Sudbury</item>
+        <item>Toronto</item>
+        <item>Vaughan</item>
+        <item>Windsor</item>
+    </string-array>
 </resources>
