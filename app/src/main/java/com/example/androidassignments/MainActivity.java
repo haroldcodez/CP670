@@ -67,7 +67,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button weather_btn = findViewById(R.id.weather_btn);
 
+        //create onclick listener for the toolbar_button
+        weather_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "User clicked the Weather Forecast Button");
+                Intent weatherIntent = new Intent(MainActivity.this, WeatherForecast.class);
+                startActivity(weatherIntent);
+            }
+        });
 
     }
 

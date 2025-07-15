@@ -34,12 +34,12 @@
     <string name="list_items_toolbar">List Items Activity</string>
     <string name="login_toolbar">Login Activity</string>
     <string name="main_activity_toolbar">Main Activity</string>
-    <string name="weather_btn_label">Prévisions météorologiques</string>
-    <string name="current_temperature">Température actuelle</string>
-    <string name="minimum_temperature">Température minimale</string>
-    <string name="maximum_temperature">Température maximale</string>
+    <string name="weather_btn_label">Weather Forecast</string>
+    <string name="current_temperature">Current Temperature</string>
+    <string name="minimum_temperature">Minimum Temperature</string>
+    <string name="maximum_temperature">Maximum Temperature</string>
     <string name="imgview">Vue des images</string>
-    <string name="city_list">Sélectionnez une ville canadienne</string>
+    <string name="city_list">Select a Canadian City</string>
     <string-array name="cities">
         <item>Ottawa</item>
         <item>Barrie</item>
