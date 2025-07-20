@@ -40,6 +40,9 @@
     <string name="maximum_temperature">Maximum Temperature</string>
     <string name="imgview">Vue des images</string>
     <string name="city_list">Select a Canadian City</string>
+    <string name="delete_message">Delete this message</string>
+    <string name="selected_msg_tv">Selected message will appear Here</string>
+    <string name="msg_id_tv">"ID = "</string>
     <string-array name="cities">
         <item>Ottawa</item>
         <item>Barrie</item>

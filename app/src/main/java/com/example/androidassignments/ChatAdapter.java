@@ -1,54 +1,57 @@
 package com.example.androidassignments;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import androidx.cursoradapter.widget.CursorAdapter;
 
-import androidx.annotation.NonNull;
+public class ChatAdapter extends CursorAdapter {
 
-import java.util.List;
+    // declare variable to regulate the view selection
+    private int sideToggle = 0;
 
-public class ChatAdapter extends ArrayAdapter<String> {
-    // declare variables
-    private final Context context;
-    private final List<String> messages;
-
-    // declare the constructor
-    public ChatAdapter(Context context, List<String> messages) {
-        super(context, 0, messages);
-        this.context = context;
-        this.messages = messages;
+    public ChatAdapter(Context context, Cursor cursor) {
+        super(context, cursor, 0);
     }
 
     @Override
-    public int getCount() {
-        return messages.size();
-    }
-
-    @Override
-    public String getItem(int position) {
-        return messages.get(position);
-    }
-
-    // declare a getView method to regulate the display of the chat text either as incoming or outgoing
-    @NonNull
-    @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View result;
 
-        if (position % 2 == 0) {
-            result = inflater.inflate(R.layout.chat_row_incoming, parent, false);
+        sideToggle = 1 - sideToggle;
+
+        if (sideToggle == 0) {
+            return inflater.inflate(R.layout.chat_row_incoming, parent, false);
         } else {
-            result = inflater.inflate(R.layout.chat_row_outgoing, parent, false);
+            return inflater.inflate(R.layout.chat_row_outgoing, parent, false);
         }
+    }
 
-        TextView messageView = result.findViewById(R.id.message_text);
-        messageView.setText(getItem(position));
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        TextView messageView = view.findViewById(R.id.message_text);
 
-        return result;
+        // Get message from cursor
+        int messageColumnIndex = cursor.getColumnIndex(ChatDatabaseHelper.KEY_MESSAGE);
+        if (messageColumnIndex != -1) {
+            String message = cursor.getString(messageColumnIndex);
+            messageView.setText(message);
+        } else {
+            Log.i("ChatAdapter", "Message not found");
+        }
+    }
+
+    // function to get the message id from the DB
+    @Override
+    public long getItemId(int position) {
+        Cursor c = getCursor();
+        if (c.moveToPosition(position)) {
+            return c.getLong(c.getColumnIndexOrThrow(ChatDatabaseHelper.KEY_ID));
+        }
+        return -1;
     }
 }

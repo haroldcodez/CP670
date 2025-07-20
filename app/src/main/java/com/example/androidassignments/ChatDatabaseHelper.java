@@ -9,8 +9,8 @@ public class ChatDatabaseHelper extends SQLiteOpenHelper {
 
     //declare variables
     private static final String DATABASE_NAME = "Messages.db";
-    private static final int VERSION_NUM = 2;
-    public final static String KEY_ID = "id";
+    private static final int VERSION_NUM = 3;
+    public final static String KEY_ID = "_id";
     public final static String KEY_MESSAGE = "message";
     public static final String TABLE_NAME = "chats";
 
@@ -26,9 +26,23 @@ public class ChatDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        // create database
         db.execSQL(DATABASE_CREATE);
         Log.i("ChatDatabaseHelper", "Calling onCreate");
+    }
+
+    // added delete message function to the DB helper class
+    public boolean deleteMessage(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            int rowsAffected = db.delete(TABLE_NAME,
+                    KEY_ID + " = ?",
+                    new String[]{String.valueOf(id)});
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            Log.e("ChatDatabaseHelper", "Error deleting message", e);
+            return false;
+        }
     }
 
     @Override

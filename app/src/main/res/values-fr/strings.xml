@@ -41,6 +41,9 @@
     <string name="maximum_temperature">Température maximale</string>
     <string name="imgview">Vue des images</string>
     <string name="city_list">Sélectionnez une ville canadienne</string>
+    <string name="delete_message">Supprimer ce message</string>
+    <string name="selected_msg_tv">Le message sélectionné apparaîtra ici</string>
+    <string name="msg_id_tv">"ID = "</string>
     <string-array name="cities">
         <item>Ottawa</item>
         <item>Barrie</item>

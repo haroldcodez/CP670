@@ -1,6 +1,7 @@
 package com.example.androidassignments;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -8,28 +9,35 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
-
-import java.util.ArrayList;
+import androidx.fragment.app.Fragment;
 
 public class ChatWindow extends AppCompatActivity {
     // declare variables
     private static final String ACTIVITY_NAME = "ChatWindow";
     private ListView listView;
     private EditText editTextMessage;
-    ArrayList<String> messages = new ArrayList<>();
     private SQLiteDatabase database;
     private ChatDatabaseHelper dbhelper;
+    private Cursor cursor;
+    private boolean isTablet;
+    private static final int REQUEST_DELETE_MESSAGE = 1;
     ChatAdapter messageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
+
+        // check if the device is a tablet
+        FrameLayout frame = findViewById(R.id.frame_layout);
+        isTablet = frame != null;
 
         // Set Toolbar as ActionBar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -46,8 +54,11 @@ public class ChatWindow extends AppCompatActivity {
         editTextMessage = findViewById(R.id.chatTextEditor);
         Button buttonSend = findViewById(R.id.sendButton);
 
-        // Initialize the chatAdapter
-        messageAdapter = new ChatAdapter(this, messages);
+        // Initialize the database and messageAdapter
+        dbhelper = new ChatDatabaseHelper(this);
+        database = dbhelper.getWritableDatabase();
+        cursor = getMessagesCursor();
+        messageAdapter = new ChatAdapter(this, cursor);
         listView.setAdapter(messageAdapter);
 
         // onClick listener for the send button
@@ -56,67 +67,74 @@ public class ChatWindow extends AppCompatActivity {
             if(!chatMessage.isEmpty()) {
                 long newRowId = insertMessageIntoDatabase(chatMessage);
                 if (newRowId != -1) {
-                    messages.add(chatMessage);
-                    messageAdapter.notifyDataSetChanged();
                     editTextMessage.setText("");
-                    listView.smoothScrollToPosition(messages.size() - 1);
                 } else {
                     Log.e(ACTIVITY_NAME, "Failed to insert message into the database");
                 }
             }
         });
-        dbhelper = new ChatDatabaseHelper(this);
-        database = dbhelper.getWritableDatabase();
+
+        // onClick listener for the listview messages
+        listView.setOnItemClickListener((p, v, pos, id) -> {
+            cursor.moveToPosition(pos);        // make sure cursor points to row
+            String text = cursor.getString(
+                    cursor.getColumnIndexOrThrow(ChatDatabaseHelper.KEY_MESSAGE));
+
+            if (isTablet) {
+                showMessageInFragment(id, text);
+            } else {
+                startMessageDetailsActivity(id, text);
+            }
+        });
 
         loadMessagesFromDatabase();
 
     }
 
-    // function to load database message and log results
-    private void loadMessagesFromDatabase() {
-        // Query to get  all messages from database
+    // function to get messages from the database cursor object
+    private Cursor getMessagesCursor() {
         String[] columns = {ChatDatabaseHelper.KEY_ID, ChatDatabaseHelper.KEY_MESSAGE};
-        Cursor cursor = database.query(
+        return database.query(
                 ChatDatabaseHelper.TABLE_NAME,
                 columns,
                 null, null, null, null, null
         );
+    }
 
-        // Log cursor information
-        Log.i(ACTIVITY_NAME, "Cursor's column count = " + cursor.getColumnCount());
+    // method to display the selected message in fragment view
+    private void showMessageInFragment(long messageId, String messageText) {
+        MessageDetails.MessageFragment fragment =
+                MessageDetails.MessageFragment.newInstance(messageId, messageText, this);
 
-        // Print column names from the cursor
-        for (int i = 0; i < cursor.getColumnCount(); i++) {
-            Log.i(ACTIVITY_NAME, "Column " + i + ": " + cursor.getColumnName(i));
-        }
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .commit();
+    }
 
-        // Get column indexes from the database
-        int messageColumnIndex = cursor.getColumnIndex(ChatDatabaseHelper.KEY_MESSAGE);
-        if (messageColumnIndex == -1) {
-            Log.e(ACTIVITY_NAME, "Error: Column '" + ChatDatabaseHelper.KEY_MESSAGE + "' not found in cursor");
-            cursor.close();
-            return;
-        }
+    private void startMessageDetailsActivity(long messageId, String messageText) {
+        Intent msgIntent = new Intent(this, MessageDetails.class);
+        msgIntent.putExtra(MessageDetails.EXTRA_MESSAGE_ID, messageId);
+        msgIntent.putExtra(MessageDetails.EXTRA_MESSAGE_TEXT, messageText);
+        startActivityForResult(msgIntent, REQUEST_DELETE_MESSAGE);
+    }
 
-        // extract and log all the saved messages in the database
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                try {
-                    String message = cursor.getString(messageColumnIndex);
-                    messages.add(message);
-                    Log.i(ACTIVITY_NAME, "SQL MESSAGE: " + message);
-                    cursor.moveToNext();
-                } catch (Exception e) {
-                    Log.e(ACTIVITY_NAME, "Error reading message from cursor", e);
-                    break;
-                }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_DELETE_MESSAGE && resultCode == RESULT_OK) {
+            long messageId = data.getLongExtra(MessageDetails.EXTRA_MESSAGE_ID, -1);
+            if (messageId != -1) {
+                deleteMessage(messageId);
             }
-        } else {
-            Log.i(ACTIVITY_NAME, "Cursor is empty - no messages in database");
         }
+    }
 
-        cursor.close();
-        messageAdapter.notifyDataSetChanged();
+    // function to load database message and log results
+    private void loadMessagesFromDatabase() {
+        //if (cursor != null && !cursor.isClosed()) cursor.close();
+
+        cursor = getMessagesCursor();
+        messageAdapter.changeCursor(cursor);   // CursorAdapter does the rest
     }
 
     // function to insert messages to the database
@@ -124,11 +142,28 @@ public class ChatWindow extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(ChatDatabaseHelper.KEY_MESSAGE, message);
 
-        try {
-            return database.insert(ChatDatabaseHelper.TABLE_NAME, null, values);
-        } catch (Exception e) {
-            Log.e(ACTIVITY_NAME, "Error inserting message into database", e);
-            return -1;
+        long id = database.insert(ChatDatabaseHelper.TABLE_NAME, null, values);
+        if (id != -1) {
+            loadMessagesFromDatabase();   // refresh cursor
+            listView.smoothScrollToPosition(messageAdapter.getCount() - 1);
+        }
+        return id;
+    }
+
+    // function to delete messages from ChatWindow
+    public void deleteMessage(long messageId) {
+        boolean ok = dbhelper.deleteMessage(messageId);
+        if (ok) {
+            loadMessagesFromDatabase();
+            if (isTablet) {
+                Fragment f = getSupportFragmentManager()
+                        .findFragmentById(R.id.frame_layout);
+                if (f != null) {
+                    getSupportFragmentManager().beginTransaction().remove(f).commit();
+                }
+            }
+        } else {
+            Toast.makeText(this, "Delete failed", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -145,12 +180,8 @@ public class ChatWindow extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (database != null && database.isOpen()) {
-            database.close();
-        }
-        if (dbhelper != null) {
-            dbhelper.close();
-        }
+        if (cursor != null) cursor.close();
+        if (database != null && database.isOpen()) database.close();
     }
 
 }

@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -161,7 +162,10 @@ public class WeatherForecast extends AppCompatActivity {
                         }
                     }
                 }
-            } catch (Exception ex) {
+            } catch (SocketTimeoutException e) {
+                Log.e(ACTIVITY_NAME, "Network Timeout, retrying...");
+                return doInBackground(args);
+            }catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
 
